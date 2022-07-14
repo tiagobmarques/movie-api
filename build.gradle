@@ -1,0 +1,39 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.12.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+group = 'com.bmarques'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	def springVersion = '2.3.12.RELEASE'
+	def lombokVersion = '1.18.20'
+	def h2Version = '1.4.200'
+	def swaggerVersion = '3.0.0'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:' + springVersion
+	implementation 'org.springframework.boot:spring-boot-starter-web:' + springVersion
+	compileOnly 'org.projectlombok:lombok:' + lombokVersion
+	runtimeOnly 'com.h2database:h2:' + h2Version
+	implementation 'io.springfox:springfox-boot-starter:' + swaggerVersion
+	implementation 'io.springfox:springfox-swagger-ui:' + swaggerVersion
+	annotationProcessor 'org.projectlombok:lombok:' + lombokVersion
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:' + springVersion
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
