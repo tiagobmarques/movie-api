@@ -49,20 +49,22 @@ public class MovieService {
                         .mapToInt(movie -> Integer.parseInt(movie.getYear()))
                         .min().orElseThrow(NoSuchElementException::new);
 
-                int newestPremium = winnerMovies.stream()
-                        .mapToInt(movie -> Integer.parseInt(movie.getYear()))
-                        .max().orElseThrow(NoSuchElementException::new);
+                for (int i = 1; i < winnerMovies.size(); i++) {
+                    int newestPremium = Integer.parseInt(winnerMovies.get(i).getYear());
 
-                int interval = newestPremium - oldestPremium;
-                if (interval >= longerInterval) {
-                    if (interval > longerInterval) moviePremiumDtoMax.clear();
-                    moviePremiumDtoMax.add(new MoviePremiumProducerDto(producer, interval, oldestPremium, newestPremium));
-                    longerInterval = interval;
-                }
-                if (interval <= smallerInterval) {
-                    if (interval < smallerInterval) moviePremiumDtoMin.clear();
-                    moviePremiumDtoMin.add(new MoviePremiumProducerDto(producer, interval, oldestPremium, newestPremium));
-                    smallerInterval = interval;
+                    int interval = newestPremium - oldestPremium;
+                    if (interval >= longerInterval) {
+                        if (interval > longerInterval) moviePremiumDtoMax.clear();
+                        moviePremiumDtoMax.add(new MoviePremiumProducerDto(producer, interval, oldestPremium, newestPremium));
+                        longerInterval = interval;
+                        oldestPremium = newestPremium;
+                    }
+                    if (interval <= smallerInterval) {
+                        if (interval < smallerInterval) moviePremiumDtoMin.clear();
+                        moviePremiumDtoMin.add(new MoviePremiumProducerDto(producer, interval, oldestPremium, newestPremium));
+                        smallerInterval = interval;
+                        oldestPremium = newestPremium;
+                    }
                 }
             }
         }
